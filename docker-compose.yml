@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack:3.4
+    container_name: cloud-pipeline-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - localstack_data:/var/lib/localstack
+
+  warehouse:
+    image: postgres:16
+    container_name: cloud-pipeline-warehouse
+    ports:
+      - "5439:5432"
+    environment:
+      - POSTGRES_DB=salesdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Admin1234
+    volumes:
+      - warehouse_data:/var/lib/postgresql/data
+
+volumes:
+  localstack_data:
+  warehouse_data:
